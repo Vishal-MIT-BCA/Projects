@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Convert JSON Data to HTML Table</title>
+    <style>
+        th, td, p, input {
+            font:14px Verdana;
+        }
+        table, th, td 
+        {
+            border: solid 1px #DDD;
+            border-collapse: collapse;
+            padding: 2px 3px;
+            text-align: center;
+        }
+        th {
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+    <input type="button" onclick="CreateTableFromJSON()" value="Create Table From JSON" />
+    <p id="showData"></p>
+</body>
+<script>
+
+function CreateTableFromJSON(){
+var data = [ {"coord":{"lon":-0.13,"lat":51.51},"weather":[{"id":300,"main":"Drizzle","description":"light intensity drizzle","icon":"09d"}],"base":"stations","main":{"temp":280.32,"pressure":1012,"humidity":81,"temp_min":279.15,"temp_max":281.15},"visibility":10000,"wind":{"speed":4.1,"deg":80},"clouds":{"all":90},"dt":1485789600,"sys":{"type":1,"id":5091,"message":0.0103,"country":"GB","sunrise":1485762037,"sunset":1485794875},"id":2643743,"name":"London","cod":200} ];
+console.log(data);
+var upper = [];
+var lower = [];
+
+$.each(data, function() {
+    $.each(this, function(outerkey, outervalue) {
+        if(upper.indexof(outerkey)===-1){
+			upper.push(outerkey);
+		};
+		
+        $.each(this, function(innerkey, innervalue) {
+            if(lower.indexof(innerkey)===-1){
+				lower.push(innerkey + '=' + innervalue);
+			};
+        });
+    });
+});
+
+console.log(upper);
+console.log(lower);
+
+//create table
+var tr = table.insertRow(-1);	//table rows
+
+for (var i=0; i<upper.length; i++)
+	{
+		var th= document.createElement("th");
+		th.innerHTML=upper[i];
+		tr.appendChild(th);
+	}	
+		tr=table.insertRow(-1);
+		for(var i=0; i<data.length; i++)
+		{
+			var tabCell = tr.insertCell(-1);
+			for(var j=0;j<upper.length;j++)
+			{
+				var tabCell=tr.insertCell(-1);
+				tabCell.innerHTML=data[i][upper[j]];
+								
+			}
+			
+		}
+	//add new created table with json data to container
+	var divContainer=document.getElementById("showData");
+	divContainer.innerHTML="";
+	divContainer.appendChild(table);
+
+	}
+</script>
+</html>
